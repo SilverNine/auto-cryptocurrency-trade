@@ -6,8 +6,8 @@ import sys
 
 symbol = sys.argv[1]
 ticker = "KRW-" + symbol
-print("symbol : " + symbol)
-print("ticker : " + ticker)
+print(f"symbol : {symbol}")
+print(f"ticker : {ticker}")
 
 trade.start_auto_trade(symbol)
 
@@ -16,9 +16,9 @@ while True:
         now = datetime.datetime.now()
         start_time = trade.get_start_time(ticker)
         end_time = start_time + datetime.timedelta(days=1)
-        # print(now)
-        # print(start_time)
-        # print(end_time)
+        # print("now", now)
+        # print("start_time", start_time)
+        # print("end_time", end_time)
 
         # 8시 58분 ~ 9시 사이에 전량 매도, 이외에는 매수 로직
         if start_time < now < end_time - datetime.timedelta(seconds=120):
@@ -26,10 +26,10 @@ while True:
             ma15 = trade.get_ma15(ticker)
             current_price = trade.get_current_price(ticker)
             emergency_price = trade.get_emergency_price(symbol)
-            # print(target_price)
-            # print(ma15)
-            # print(current_price)
-            # print(emergency_price)
+            # print("target_price", target_price)
+            # print("ma15", ma15)
+            # print("current_price", current_price)
+            # print("emergency_price", emergency_price)
 
             # 현재가격이 위험가격 밑으로 떨어지면 전량 매도
             if emergency_price > current_price:
