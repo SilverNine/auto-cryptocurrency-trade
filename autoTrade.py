@@ -20,7 +20,7 @@ while True:
         # print(start_time)
         # print(end_time)
 
-        if start_time < now < end_time - datetime.timedelta(seconds=120):
+        if if start_time + datetime.timedelta(seconds=360) < now < end_time + datetime.timedelta(seconds=180):
             target_price = trade.get_target_price(krw_symbol, 0.5)
             ma15 = trade.get_ma15(krw_symbol)
             current_price = trade.get_current_price(krw_symbol)
