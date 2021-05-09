@@ -20,8 +20,8 @@ while True:
         # print(start_time)
         # print(end_time)
 
-        # 9시 3분 ~ 6분 사이에 전량 매도, 이외에는 매수 로직
-        if start_time + datetime.timedelta(seconds=360) < now < end_time + datetime.timedelta(seconds=180):
+        # 8시 58분 ~ 9시 사이에 전량 매도, 이외에는 매수 로직
+        if start_time < now < end_time - datetime.timedelta(seconds=120):
             target_price = trade.get_target_price(ticker, 0.5)
             ma15 = trade.get_ma15(ticker)
             current_price = trade.get_current_price(ticker)
