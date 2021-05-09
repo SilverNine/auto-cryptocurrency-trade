@@ -62,7 +62,7 @@ def get_emergency_price(symbol):
     if(avg_buy_price == 0):
         return 0
 
-    return avg_buy_price * 0.95
+    return avg_buy_price * 0.97
 
 
 def get_start_time(ticker):

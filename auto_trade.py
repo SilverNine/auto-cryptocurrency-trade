@@ -22,7 +22,7 @@ while True:
 
         # 8시 58분 ~ 9시 사이에 전량 매도, 이외에는 매수 로직
         if start_time < now < end_time - datetime.timedelta(seconds=120):
-            target_price = trade.get_target_price(ticker, 0.5)
+            target_price = trade.get_target_price(ticker, 0.3)
             ma15 = trade.get_ma15(ticker)
             current_price = trade.get_current_price(ticker)
             emergency_price = trade.get_emergency_price(symbol)
