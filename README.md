@@ -14,9 +14,9 @@ pip freeze > requirements.txt
 
 ## start trade
 
-- sh gogogo.sh
-- ( nohup python autoTrade.py ETH > output-eth.log & )
+- sh start.sh
+- ( nohup python auto_trade.py ETH > output-eth.log & )
 
 ## quit trade
 
-- ps ax | grep autoTrade | awk '{print $1}' | xargs kill
+- ps ax | grep auto_trade | awk '{print $1}' | xargs kill
