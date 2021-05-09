@@ -6,7 +6,7 @@ import json
 
 access = "access"
 secret = "secret"
-slackToken = "slack"
+slackToken = "xoxb-token"
 
 upbit = pyupbit.Upbit(access, secret)
 
@@ -55,9 +55,14 @@ def get_avg_buy_price(symbol):
     return 0
 
 
-def get_emergency_price(symbol):
+def get_emergency_price(ticker, symbol):
     """위험 가격 조회"""
-    return get_avg_buy_price(symbol) * 0.95
+    avg_buy_price = get_avg_buy_price(symbol)
+
+    if(avg_buy_price == 0):
+        return 0
+
+    return avg_buy_price * 0.95
 
 
 def get_start_time(ticker):
@@ -96,18 +101,18 @@ def get_min_quantity(symbol):
     return "%2.5f" % (5000/price)
 
 
-def execute_sell(krw_symbol, symbol):
+def execute_sell(ticker, symbol):
     balance = get_balance(symbol)
     if balance > float(get_min_quantity(symbol)):
-        sell_result = sell_market_order(krw_symbol, balance)
+        sell_result = sell_market_order(ticker, balance)
         post_message("#general", symbol +
                      " sell : " + str(sell_result))
 
 
-def execute_buy(krw_symbol, symbol):
+def execute_buy(ticker, symbol):
     krw = get_balance("KRW")
     if krw > 5000:
         buy_result = buy_market_order(
-            krw_symbol, krw*0.9995)
+            ticker, krw*0.9995)
         post_message("#general", symbol +
                      " buy : " + str(buy_result))
