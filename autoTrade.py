@@ -20,26 +20,26 @@ while True:
         # print(start_time)
         # print(end_time)
 
-        if if start_time + datetime.timedelta(seconds=360) < now < end_time + datetime.timedelta(seconds=180):
+        # 9시 3분 ~ 6분 사이에 전량 매도, 이외에는 매수 로직
+        if start_time + datetime.timedelta(seconds=360) < now < end_time + datetime.timedelta(seconds=180):
             target_price = trade.get_target_price(krw_symbol, 0.5)
             ma15 = trade.get_ma15(krw_symbol)
             current_price = trade.get_current_price(krw_symbol)
+            emergency_price = trade.get_emergency_price(symbol)
             # print(target_price)
             # print(ma15)
             # print(current_price)
-            if target_price < current_price and ma15 < current_price:
-                krw = trade.get_balance("KRW")
-                if krw > 5000:
-                    buy_result = trade.buy_market_order(
-                        krw_symbol, krw*0.9995)
-                    trade.post_message("#general", symbol +
-                                       " buy : " + str(buy_result))
+            # print(emergency_price)
+
+            # 현재가격이 위험가격 밑으로 떨어지면 전량 매도
+            if emergency_price > current_price:
+                trade.execute_sell(krw_symbol, symbol)
+            # 현재가가 변동성돌파전략 가격보다 크고 이동성 평균값보다 크면 매수
+            elif target_price < current_price and ma15 < current_price:
+                trade.execute_buy(krw_symbol, symbol)
         else:
-            balance = trade.get_balance(symbol)
-            if balance > float(trade.get_min_quantity(symbol)):
-                sell_result = trade.sell_market_order(krw_symbol, balance)
-                trade.post_message("#general", symbol +
-                                   " sell : " + str(sell_result))
+            # 전량 매도
+            trade.execute_sell(krw_symbol, symbol)
     except TypeError as e:
         # TypeError는 API 호출이 많을때 가끔 발생하니 Pass
         pass

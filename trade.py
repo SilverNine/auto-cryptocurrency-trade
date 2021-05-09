@@ -12,7 +12,7 @@ upbit = pyupbit.Upbit(access, secret)
 
 
 def start_auto_trade(symbol):
-    print(symbol + "Auto Trade Start")
+    print(symbol + " Auto Trade Start")
     post_message("#general", symbol + " Auto Trade Start")
     balances = upbit.get_balances()
     print(json.dumps(balances))
@@ -41,6 +41,23 @@ def get_target_price(ticker, k):
     target_price = df.iloc[0]['close'] + \
         (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target_price
+
+
+def get_avg_buy_price(symbol):
+    """평균 매수가 조회"""
+    balances = upbit.get_balances()
+    for b in balances:
+        if b['currency'] == symbol:
+            if b['avg_buy_price'] is not None:
+                return float(b['avg_buy_price'])
+            else:
+                return 0
+    return 0
+
+
+def get_emergency_price(symbol):
+    """위험 가격 조회"""
+    return get_avg_buy_price(symbol) * 0.95
 
 
 def get_start_time(ticker):
@@ -77,3 +94,20 @@ def get_current_price(ticker):
 def get_min_quantity(symbol):
     price = pyupbit.get_current_price("KRW-"+symbol)
     return "%2.5f" % (5000/price)
+
+
+def execute_sell(krw_symbol, symbol):
+    balance = get_balance(symbol)
+    if balance > float(get_min_quantity(symbol)):
+        sell_result = sell_market_order(krw_symbol, balance)
+        post_message("#general", symbol +
+                     " sell : " + str(sell_result))
+
+
+def execute_buy(krw_symbol, symbol):
+    krw = get_balance("KRW")
+    if krw > 5000:
+        buy_result = buy_market_order(
+            krw_symbol, krw*0.9995)
+        post_message("#general", symbol +
+                     " buy : " + str(buy_result))
