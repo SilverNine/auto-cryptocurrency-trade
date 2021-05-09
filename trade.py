@@ -55,7 +55,7 @@ def get_avg_buy_price(symbol):
     return 0
 
 
-def get_emergency_price(ticker, symbol):
+def get_emergency_price(symbol):
     """위험 가격 조회"""
     avg_buy_price = get_avg_buy_price(symbol)
 

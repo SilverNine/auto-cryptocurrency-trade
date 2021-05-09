@@ -25,7 +25,7 @@ while True:
             target_price = trade.get_target_price(ticker, 0.5)
             ma15 = trade.get_ma15(ticker)
             current_price = trade.get_current_price(ticker)
-            emergency_price = trade.get_emergency_price(ticker, symbol)
+            emergency_price = trade.get_emergency_price(symbol)
             # print(target_price)
             # print(ma15)
             # print(current_price)
